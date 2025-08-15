@@ -1,6 +1,6 @@
 {
   "name": "setup-rn-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A powerful CLI tool that automates the setup of React Native projects with popular packages and configurations",
   "main": "index.js",
   "bin": {
