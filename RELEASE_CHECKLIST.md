@@ -57,7 +57,7 @@ Choose appropriate version bump:
 # For bug fixes (1.0.0 → 1.0.1)
 npm run version:patch
 
-# For new features (1.0.0 → 1.1.0)  
+# For new features (1.0.0 → 1.1.0)
 npm run version:minor
 
 # For breaking changes (1.0.0 → 2.0.0)
@@ -144,7 +144,7 @@ npm run prepare-release
 # 2. Version bump
 npm run version:patch  # or minor/major
 
-# 3. Publish  
+# 3. Publish
 npm publish
 
 # 4. Verify

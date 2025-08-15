@@ -12,7 +12,7 @@ class ReleasePrep {
 
   async run() {
     console.log(chalk.cyan.bold('🚀 Preparing Setup React Native CLI for Release\n'));
-    
+
     try {
       await this.checkPrerequisites();
       await this.runTests();
@@ -27,7 +27,7 @@ class ReleasePrep {
 
   async checkPrerequisites() {
     console.log(chalk.blue('📋 Checking prerequisites...'));
-    
+
     // Check if git is clean
     try {
       const status = execSync('git status --porcelain', { encoding: 'utf8' });
@@ -54,7 +54,7 @@ class ReleasePrep {
 
   async runTests() {
     console.log(chalk.blue('\n🧪 Running tests...'));
-    
+
     try {
       execSync('npm test', { stdio: 'inherit' });
       console.log(chalk.green('✅ All tests passed'));
@@ -65,10 +65,10 @@ class ReleasePrep {
 
   async validatePackage() {
     console.log(chalk.blue('\n📦 Validating package...'));
-    
+
     // Check package.json
     const packageJson = await fs.readJson(path.join(this.projectRoot, 'package.json'));
-    
+
     const requiredFields = ['name', 'version', 'description', 'main', 'bin', 'author', 'license'];
     for (const field of requiredFields) {
       if (!packageJson[field]) {
@@ -96,30 +96,30 @@ class ReleasePrep {
 
   async testLocalInstallation() {
     console.log(chalk.blue('\n🔧 Testing local installation...'));
-    
+
     try {
       // Create package
       execSync('npm pack', { stdio: 'pipe' });
       const packageJson = await fs.readJson(path.join(this.projectRoot, 'package.json'));
       const tarballName = `setup-rn-cli-${packageJson.version}.tgz`;
-      
+
       // Test installation
       execSync(`npm install -g ./${tarballName}`, { stdio: 'pipe' });
-      
+
       // Test CLI commands
       const versionOutput = execSync('setup-rn --version', { encoding: 'utf8' });
       console.log(chalk.green(`✅ CLI version check: ${versionOutput.trim()}`));
-      
+
       const helpOutput = execSync('setup-rn --help', { encoding: 'utf8', stdio: 'pipe' });
       if (!helpOutput.includes('Usage:')) {
         throw new Error('Help command output seems incorrect');
       }
       console.log(chalk.green('✅ CLI help command works'));
-      
+
       // Cleanup
       execSync('npm uninstall -g setup-rn-cli', { stdio: 'pipe' });
       await fs.remove(path.join(this.projectRoot, tarballName));
-      
+
       console.log(chalk.green('✅ Local installation test passed'));
     } catch (error) {
       throw new Error('Local installation test failed: ' + error.message);
@@ -128,25 +128,25 @@ class ReleasePrep {
 
   showReleaseInstructions() {
     const packageJson = require(path.join(this.projectRoot, 'package.json'));
-    
+
     console.log(chalk.green.bold('\n🎉 Ready for Release!'));
     console.log(chalk.cyan('\n📋 Release Steps:'));
     console.log(chalk.white('1. Update version (if needed):'));
     console.log(chalk.gray('   npm version patch  # for bug fixes'));
     console.log(chalk.gray('   npm version minor  # for new features'));
     console.log(chalk.gray('   npm version major  # for breaking changes'));
-    
+
     console.log(chalk.white('\n2. Publish to npm:'));
     console.log(chalk.gray('   npm publish'));
-    
+
     console.log(chalk.white('\n3. Create GitHub release:'));
     console.log(chalk.gray('   git push origin --tags'));
-    
+
     console.log(chalk.white('\n4. Verify publication:'));
     console.log(chalk.gray('   npm info setup-rn-cli'));
     console.log(chalk.gray('   npm install -g setup-rn-cli'));
     console.log(chalk.gray('   setup-rn --version'));
-    
+
     console.log(chalk.blue(`\n📊 Current version: ${packageJson.version}`));
     console.log(chalk.blue(`📦 Package name: ${packageJson.name}`));
     console.log(chalk.yellow('\n⚠️  Make sure to update CHANGELOG.md before releasing!'));
