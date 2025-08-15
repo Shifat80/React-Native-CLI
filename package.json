@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/setup-rn-cli.git"
+    "url": "git+https://github.com/Shifat80/React-Native-CLI.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/setup-rn-cli/issues"
+    "url": "https://github.com/Shifat80/React-Native-CLI/issues"
   },
-  "homepage": "https://github.com/your-username/setup-rn-cli#readme",
+  "homepage": "https://github.com/Shifat80/React-Native-CLI#readme",
   "scripts": {
     "start": "node index.js",
     "test": "node test.js",
@@ -63,10 +63,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "inquirer": "^12.9.2",
     "chalk": "^4.1.2",
-    "ora": "^5.4.1",
+    "execa": "^5.1.1",
     "fs-extra": "^11.1.1",
-    "execa": "^5.1.1"
+    "inquirer": "^12.9.2",
+    "ora": "^5.4.1",
+    "setup-rn-cli": "^1.0.0"
   }
 }
