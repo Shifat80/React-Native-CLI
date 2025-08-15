@@ -1,0 +1,50 @@
+// App.tsx template for {{framework}} with {{language}}
+import React from 'react';
+{{#if hasNavigation}}
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './src/navigation';
+{{else}}
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import HomeScreen from './src/screens/HomeScreen';
+{{/if}}
+{{#if hasNativeWind}}
+import './global.css';
+{{/if}}
+{{#if hasReactQuery}}
+import { QueryProvider } from './src/hooks/useQuery';
+{{/if}}
+
+{{#if isTypeScript}}
+const App: React.FC = () => {
+{{else}}
+const App = () => {
+{{/if}}
+  return (
+{{#if hasReactQuery}}
+    <QueryProvider>
+{{/if}}
+{{#if hasNavigation}}
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+{{else}}
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        <HomeScreen />
+      </View>
+{{/if}}
+{{#if hasReactQuery}}
+    </QueryProvider>
+{{/if}}
+  );
+};
+
+{{#unless hasNavigation}}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+{{/unless}}
+
+export default App;

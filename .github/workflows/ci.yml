@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [14, 16, 18, 20]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Test CLI installation
+        run: |
+          npm link
+          npx setup-rn --version
+          npx setup-rn --help
+
+      - name: Test package creation
+        run: npm pack
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Check package.json format
+        run: |
+          if ! jq empty package.json; then
+            echo "package.json is not valid JSON"
+            exit 1
+          fi
+          
+      - name: Verify required files exist
+        run: |
+          test -f index.js || (echo "index.js missing" && exit 1)
+          test -f README.md || (echo "README.md missing" && exit 1)
+          test -f LICENSE || (echo "LICENSE missing" && exit 1)
+          test -f CHANGELOG.md || (echo "CHANGELOG.md missing" && exit 1)
+          
+      - name: Check shebang in index.js
+        run: |
+          if ! head -1 index.js | grep -q "#!/usr/bin/env node"; then
+            echo "Missing or incorrect shebang in index.js"
+            exit 1
+          fi

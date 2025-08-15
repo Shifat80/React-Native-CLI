@@ -1,0 +1,19 @@
+{
+  "name": "Example Setup React Native Configuration",
+  "description": "This file allows you to set default values for the Setup RN CLI",
+  "defaultFramework": "expo",
+  "defaultLanguage": "typescript",
+  "defaultPackages": [
+    "nativewind",
+    "react-navigation",
+    "zustand"
+  ],
+  "defaultGitInit": true,
+  "defaultInstallDeps": true,
+  "defaultIDE": "vscode",
+  "packagePreferences": {
+    "nativewind": { "autoConfig": true },
+    "firebase": { "includeAuth": true, "includeFirestore": true }
+  },
+  "usage": "Copy this file to your project root as .setuprc.json to use these defaults"
+}
